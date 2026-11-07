@@ -1,77 +1,72 @@
 # Linux Security Audits Using Lynis
 
-## Project Overview
-This project focuses on developing custom security checks for Linux systems using Lynis. It includes two shell scripts designed to inspect selected password policy settings and HTTPS/TLS certificate validity.
-The objective is to explore how custom tests can extend a Linux security audit and help identify potential security configuration issues.
+## Author: Harleen Kaur
+Tests Included
 
-## Project Objectives
-- Understand the functionality of Lynis and its custom test framework.
-- Audit selected Linux password policy settings.
-- Retrieve HTTPS/TLS certificate information using OpenSSL.
-- Display security-related findings and warnings.
-- Document the implementation and execution process.
+1. CUST-1010 — HTTPS/TLS Certificate Audit
 
-## Custom Security Scripts
+Filename: https_tls_audit.sh
 
-### 1. HTTPS/TLS Security Audit
-**Filename:** `https_tls_audit.sh`  
-**Test ID:** `CUST-1010`
+Uses OpenSSL to connect to an HTTPS server and retrieve its TLS certificate information.
 
-This script uses OpenSSL to connect to `example.com` on port `443` and retrieve its TLS certificate details.
+Retrieves the certificate subject and issuer.
 
-**Key functions:**
-- Retrieves certificate subject, issuer and validity dates.
-- Checks whether the certificate has expired.
-- Displays a warning if certificate retrieval fails or the certificate has expired.
-- Provides a suggestion to investigate connection or certificate retrieval issues.
+Displays certificate validity dates.
 
-### 2. Linux Password Policy Audit
+Checks whether the certificate has expired.
 
-**Filename:** `password_policy_audit.sh`  
-**Test ID:** `CUST-1020`
-This script checks selected password policy settings on a Linux system.
+Displays warnings if certificate retrieval fails or the certificate has expired.
 
-**Key functions:**
-- Inspects `PASS_MAX_DAYS` in `/etc/login.defs`.
-- Inspects `PASS_MIN_DAYS` in `/etc/login.defs`.
-- Inspects `PASS_WARN_AGE` in `/etc/login.defs`.
-- Checks whether `/etc/security/pwquality.conf` exists.
-- Displays warnings when selected settings or the configuration file are missing.
+2. CUST-1020 — Linux Password Policy Audit
 
-## Technologies Used
+Filename: password_policy_audit.sh
 
-- **Operating System:** Ubuntu Linux
-- **Security Auditing Tool:** Lynis
-- **Scripting Language:** Shell scripting
-- **Certificate Inspection:** OpenSSL
+Inspects selected password policy settings and configuration files on a Linux system.
 
-## Requirements
+Checks PASS_MAX_DAYS in /etc/login.defs.
 
-- A Linux system, such as Ubuntu
-- Lynis installed
-- OpenSSL installed for the HTTPS/TLS audit
-- Network connectivity to the target HTTPS server
+Checks PASS_MIN_DAYS in /etc/login.defs.
 
-## Execution
+Checks PASS_WARN_AGE in /etc/login.defs.
 
-The scripts are designed to be integrated into Lynis as custom tests.
-Run a Lynis system audit with:
-bash
+Verifies whether /etc/security/pwquality.conf exists.
+
+Displays warnings when selected settings or the configuration file are missing.
+
+Environment
+
+Ubuntu Linux
+
+Lynis
+
+Shell scripting
+
+OpenSSL
+
+Requirements
+
+A Linux system, such as Ubuntu.
+
+Lynis installed.
+
+OpenSSL installed for the HTTPS/TLS audit.
+
+Network connectivity to the target HTTPS server.
+
+How to Run
+
+The scripts are intended to be integrated into Lynis as custom security tests. Run a system audit using:
+
 sudo lynis audit system --quick
-Review the terminal output to verify whether the custom tests execute and display their findings.
 
-## Expected Findings
+Review the audit output to check whether the custom tests execute and report their findings.
 
-The HTTPS/TLS audit is intended to display certificate details and indicate whether the certificate has expired or could not be retrieved.
-The password policy audit is intended to report the selected password-aging settings and whether the password-quality configuration file exists.
+To check the shell syntax of the scripts, run:
 
-**Note:** These are intended behaviours. Actual results depend on the system configuration, network access and successful integration of the custom tests into Lynis.
+bash -n https_tls_audit.sh
+bash -n password_policy_audit.sh
 
-## Limitations
-
-- The HTTPS/TLS script checks certificate retrieval and expiry. It does not perform a complete TLS security assessment, including cipher-suite analysis or comprehensive certificate-chain validation.
-- The password policy script checks whether selected settings exist. It does not currently evaluate whether their numerical values meet a defined security baseline.
-- The checks cover selected configuration areas and do not replace a comprehensive security audit.
+Note: These scripts focus on selected security configuration checks. The HTTPS/TLS audit does not perform a complete TLS security assessment, and the password policy audit does not evaluate numerical settings against a defined security baseline. Actual findings depend on system configuration, network connectivity, and successful integration with Lynis.
 
 ## Repository Structure
 da1-lynis-custom-audits/
